@@ -1,6 +1,6 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Services } from 'src/common/config/configuration';
+import { Services } from '../common/config/configuration';
 import { Item } from './interfaces/item.interface';
 
 @Injectable()
