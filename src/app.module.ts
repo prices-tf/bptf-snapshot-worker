@@ -6,6 +6,7 @@ import { validation } from './common/config/validation';
 import { ListingModule } from './listing/listing.module';
 import { ItemModule } from './item/item.module';
 import IORedis from 'ioredis';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import IORedis from 'ioredis';
         };
       },
     }),
+    HealthModule,
     ListingModule,
     ItemModule,
   ],

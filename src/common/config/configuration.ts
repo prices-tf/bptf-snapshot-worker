@@ -1,4 +1,5 @@
 export interface Config {
+  port: number;
   bptfApiKey: string;
   queue: QueueConfig;
   services: Services;
@@ -19,6 +20,10 @@ export interface Services {
 
 export default (): Config => {
   return {
+    port:
+      process.env.NODE_ENV === 'production'
+        ? 3000
+        : parseInt(process.env.PORT, 10),
     bptfApiKey: process.env.BPTF_API_KEY,
     queue: {
       isSentinel: process.env.QUEUE_IS_SENTINEL === 'true',
