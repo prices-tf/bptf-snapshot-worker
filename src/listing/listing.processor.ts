@@ -5,7 +5,7 @@ import {
   OnQueueActive,
   OnQueueCompleted,
 } from '@nestjs/bull';
-import { Job, RateLimiter } from 'bull';
+import { Job } from 'bull';
 import { ListingService } from './listing.service';
 
 interface JobData {
