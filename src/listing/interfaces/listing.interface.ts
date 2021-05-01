@@ -34,6 +34,7 @@ export interface Listing {
   intent: ListingIntent;
   currencies: ListingCurrencies;
   isAutomatic: boolean;
+  isOffers: boolean;
   createdAt: Date;
   bumpedAt: Date;
 }

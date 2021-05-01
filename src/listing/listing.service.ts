@@ -94,6 +94,7 @@ export class ListingService {
             metal: listing.currencies.metal ?? 0,
           },
           isAutomatic: listing.automatic === 1,
+          isOffers: listing.offers === 1,
           createdAt: new Date(listing.created * 1000),
           bumpedAt: new Date(listing.bump * 1000),
         }));
