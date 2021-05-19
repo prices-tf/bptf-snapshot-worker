@@ -74,6 +74,12 @@ export class ListingService {
       qs.item = targetSchemaItem.item_name;
     }
 
+    if (item.crateseries !== null) {
+      qs.numeric = 'crate';
+      qs.comparison = 'eq';
+      qs.value = item.crateseries;
+    }
+
     return this.httpService
       .get('https://backpack.tf/api/classifieds/search/v1', {
         params: qs,
