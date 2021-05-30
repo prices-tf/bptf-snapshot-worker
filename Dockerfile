@@ -14,7 +14,6 @@ COPY ./src .
 RUN npm run build
 
 FROM node:16-alpine
-LABEL org.opencontainers.image.source https://github.com/Nicklason/bptf-listing-worker
 
 ENV NODE_ENV production
 
