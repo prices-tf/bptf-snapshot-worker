@@ -3,7 +3,11 @@ import { ItemService } from '../item/item.service';
 import * as SKU from 'tf2-sku';
 import { ConfigService } from '@nestjs/config';
 import { Config, Services } from '../common/config/configuration';
-import { Listing } from '../listing/interfaces/listing.interface';
+import {
+  ClassifiedsSearchResponse,
+  Listing as BptfListing,
+} from './interfaces/classifieds-search.interface';
+import { Listing } from './interfaces/listing.interface';
 
 @Injectable()
 export class ListingService {
@@ -81,14 +85,17 @@ export class ListingService {
     }
 
     return this.httpService
-      .get('https://backpack.tf/api/classifieds/search/v1', {
-        params: qs,
-      })
+      .get<ClassifiedsSearchResponse>(
+        'https://backpack.tf/api/classifieds/search/v1',
+        {
+          params: qs,
+        },
+      )
       .toPromise()
       .then((response) => {
-        const listings = response.data.sell.listings.concat(
-          response.data.buy.listings,
-        );
+        const listings: BptfListing[] = []
+          .concat(response.data.sell.listings)
+          .concat(response.data.buy.listings);
 
         return listings.map((listing) => ({
           id: listing.id,
@@ -100,7 +107,9 @@ export class ListingService {
             metal: listing.currencies.metal ?? 0,
           },
           isAutomatic: listing.automatic === 1,
+          isBuyout: listing.buyout === 1,
           isOffers: listing.offers === 1,
+          details: listing.details,
           createdAt: new Date(listing.created * 1000),
           bumpedAt: new Date(listing.bump * 1000),
         }));
