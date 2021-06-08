@@ -48,7 +48,7 @@
     "@types/ioredis": "^4.26.2",
     "@types/jest": "^26.0.23",
     "@types/node": "^14.14.41",
-    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.22.1",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
