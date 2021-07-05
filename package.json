@@ -1,5 +1,5 @@
 {
-  "name": "bptf-listing-worker",
+  "name": "bptf-snapshot-worker",
   "description": "Worker responsible for getting listings from backpack.tf",
   "author": "Nicklas Marc Pedersen",
   "private": true,
