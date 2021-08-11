@@ -21,7 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json --maxWorkers=1"
   },
   "dependencies": {
-    "@nestjs/bull": "^0.3.1",
+    "@nestjs/bull": "^0.4.1",
     "@nestjs/common": "^7.6.18",
     "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.6.18",
@@ -55,7 +55,7 @@
     "eslint": "^7.29.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "husky": "^6.0.0",
+    "husky": "^7.0.1",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "semantic-release": "^17.4.4",
