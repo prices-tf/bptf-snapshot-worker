@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Services } from 'src/common/config/configuration';
+import { Services } from '../common/config/configuration';
 import { Skin } from './interfaces/skin.interface';
 
 @Injectable()
