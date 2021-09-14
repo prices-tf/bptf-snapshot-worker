@@ -1,4 +1,4 @@
-import { HttpService, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { SchemaService } from '../schema/schema.service';
 import * as SKU from 'tf2-sku';
 import { ConfigService } from '@nestjs/config';
@@ -7,6 +7,7 @@ import { ClassifiedsSearchResponse } from './interfaces/classifieds-search.inter
 import { Snapshot } from './interfaces/snapshot.interface';
 import { Item } from './interfaces/item.interface';
 import { SkinService } from '../skin/skin.service';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class ListingService {
