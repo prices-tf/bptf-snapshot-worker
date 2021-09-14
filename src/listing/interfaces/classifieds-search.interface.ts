@@ -1,6 +1,6 @@
 export enum ListingIntent {
-  BUY = 0,
-  SELL = 1,
+  BUY = 'buy',
+  SELL = 'sell',
 }
 
 /**
@@ -72,18 +72,23 @@ export type IntBool = 0 | 1;
  * A listing from backpack.tf
  */
 export interface Listing {
-  id: string;
   steamid: string;
-  item: ListingItem;
-  appid: number;
-  currencies: Currencies;
   offers: IntBool;
   buyout: IntBool;
   details: string;
-  created: number;
-  bump: number;
   intent: ListingIntent;
-  automatic: IntBool;
+  timestamp: number;
+  price: number;
+  item: ListingItem;
+  currencies: {
+    keys?: number;
+    metal?: number;
+  };
+  bump: number;
+  userAgent?: {
+    lastPulse: number;
+    client: string;
+  };
 }
 
 /**
@@ -103,17 +108,8 @@ export interface SellListing extends Listing {
 }
 
 export interface ClassifiedsSearchResponse {
-  total: number;
-  skip: number;
-  page_size: number;
-  buy: {
-    total: number;
-    listings: BuyListing[];
-    fold: boolean;
-  };
-  sell: {
-    total: number;
-    listings: SellListing[];
-    fold: boolean;
-  };
+  listings?: Listing[];
+  appid: number;
+  sku: string;
+  createdAt: number;
 }

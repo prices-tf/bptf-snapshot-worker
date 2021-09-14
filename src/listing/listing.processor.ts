@@ -2,9 +2,9 @@ import {
   Processor,
   Process,
   OnQueueFailed,
-  OnQueueActive,
   OnQueueCompleted,
 } from '@nestjs/bull';
+import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
 import { ListingService } from './listing.service';
 
@@ -14,36 +14,33 @@ interface JobData {
 
 @Processor('snapshot')
 export class ListingConsumer {
+  private readonly logger = new Logger(ListingConsumer.name);
+
   constructor(private readonly listingService: ListingService) {}
 
   @Process()
   async getListings(job: Job<JobData>) {
     const sku = job.data.sku;
 
-    const listings = await this.listingService.getListings(sku);
+    const snapshot = await this.listingService.getSnapshot(sku);
 
-    await this.listingService.saveListings(sku, listings);
+    await this.listingService.saveSnapshot(sku, snapshot);
 
     return {
-      listingCount: listings.length,
+      listingCount: snapshot.listings.length,
     };
-  }
-
-  @OnQueueActive()
-  onQueueActive(job: Job<JobData>) {
-    console.log('Getting listings for ' + job.data.sku);
   }
 
   @OnQueueCompleted()
   onQueueCompleted(job: Job<JobData>, result: { listingCount: number }) {
-    console.log(
+    this.logger.log(
       'Found ' + result.listingCount + ' listing(s) for ' + job.data.sku,
     );
   }
 
   @OnQueueFailed()
   onQueueFailed(job: Job, err: Error) {
-    console.log('Job with id ' + job.id + ' failed: ' + err.message);
+    this.logger.error('Job with id ' + job.id + ' failed: ' + err.message);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (err?.isAxiosError === true) {

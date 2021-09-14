@@ -1,6 +1,6 @@
 export interface Config {
   port: number;
-  bptfApiKey: string;
+  bptfAccessToken: string;
   queue: QueueConfig;
   services: Services;
 }
@@ -16,6 +16,7 @@ export interface QueueConfig {
 export interface Services {
   schema: string;
   listings: string;
+  skin: string;
 }
 
 export default (): Config => {
@@ -24,7 +25,7 @@ export default (): Config => {
       process.env.NODE_ENV === 'production'
         ? 3000
         : parseInt(process.env.PORT, 10),
-    bptfApiKey: process.env.BPTF_API_KEY,
+    bptfAccessToken: process.env.BPTF_ACCESS_TOKEN,
     queue: {
       isSentinel: process.env.QUEUE_IS_SENTINEL === 'true',
       host: process.env.QUEUE_HOST,
@@ -33,8 +34,9 @@ export default (): Config => {
       set: process.env.QUEUE_SET,
     },
     services: {
-      schema: process.env.SCHEMA_SERVICE_URL,
-      listings: process.env.LISTING_SERVICE_URL,
+      schema: process.env.TF2_SCHEMA_SERVICE_URL,
+      listings: process.env.TF2_SNAPSHOT_SERVICE_URL,
+      skin: process.env.TF2_SKIN_SERVICE_URL,
     },
   };
 };

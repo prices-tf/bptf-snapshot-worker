@@ -1,22 +1,22 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Services } from '../common/config/configuration';
-import { Item } from './interfaces/item.interface';
+import { Skin } from './interfaces/skin.interface';
 
 @Injectable()
-export class ItemService {
+export class SkinService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {}
 
-  getItemByDefindex(defindex: number): Promise<Item> {
+  getSkinByid(id: number): Promise<Skin> {
     const url = `${
-      this.configService.get<Services>('services').schema
-    }/items/${defindex}`;
+      this.configService.get<Services>('services').skin
+    }/skins/id/${id}`;
 
     return this.httpService
-      .get<Item>(url)
+      .get<Skin>(url)
       .toPromise()
       .then((response) => {
         return response.data;

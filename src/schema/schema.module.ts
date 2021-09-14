@@ -1,10 +1,10 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ItemService } from './item.service';
+import { SchemaService } from './schema.service';
 
 @Module({
   imports: [HttpModule, ConfigModule],
-  providers: [ItemService],
-  exports: [ItemService],
+  providers: [SchemaService],
+  exports: [SchemaService],
 })
-export class ItemModule {}
+export class SchemaModule {}

@@ -4,9 +4,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration, { QueueConfig } from './common/config/configuration';
 import { validation } from './common/config/validation';
 import { ListingModule } from './listing/listing.module';
-import { ItemModule } from './item/item.module';
 import IORedis from 'ioredis';
 import { HealthModule } from './health/health.module';
+import { SchemaModule } from './schema/schema.module';
+import { SkinModule } from './skin/skin.module';
 
 @Module({
   imports: [
@@ -54,7 +55,8 @@ import { HealthModule } from './health/health.module';
     }),
     HealthModule,
     ListingModule,
-    ItemModule,
+    SchemaModule,
+    SkinModule,
   ],
 })
 export class AppModule {}
