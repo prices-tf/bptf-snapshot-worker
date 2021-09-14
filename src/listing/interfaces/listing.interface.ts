@@ -1,7 +1,6 @@
 import { ListingIntent, ListingItem } from './classifieds-search.interface';
 
 export interface Listing {
-  id: string;
   steamid64: string;
   item: ListingItem;
   intent: ListingIntent;

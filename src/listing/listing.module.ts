@@ -1,9 +1,11 @@
 import { BullModule } from '@nestjs/bull';
-import { HttpModule, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ItemModule } from '../item/item.module';
+import { SkinModule } from '../skin/skin.module';
+import { SchemaModule } from '../schema/schema.module';
 import { ListingConsumer } from './listing.processor';
 import { ListingService } from './listing.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -12,7 +14,8 @@ import { ListingService } from './listing.service';
     }),
     ConfigModule,
     HttpModule,
-    ItemModule,
+    SchemaModule,
+    SkinModule,
   ],
   providers: [ListingService, ListingConsumer],
 })

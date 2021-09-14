@@ -1,4 +1,4 @@
-export interface Item {
+export interface SchemaItem {
   name: string;
   defindex: number;
   item_class: string;
