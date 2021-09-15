@@ -1,8 +1,14 @@
 export interface Config {
   port: number;
   bptfAccessToken: string;
+  limiter: LimiterConfig;
   queue: QueueConfig;
   services: Services;
+}
+
+export interface LimiterConfig {
+  max: number;
+  duration: number;
 }
 
 export interface QueueConfig {
@@ -26,6 +32,10 @@ export default (): Config => {
         ? 3000
         : parseInt(process.env.PORT, 10),
     bptfAccessToken: process.env.BPTF_ACCESS_TOKEN,
+    limiter: {
+      max: parseInt(process.env.LIMITER_MAX, 10),
+      duration: parseInt(process.env.LIMITER_DURATION),
+    },
     queue: {
       isSentinel: process.env.QUEUE_IS_SENTINEL === 'true',
       host: process.env.QUEUE_HOST,
