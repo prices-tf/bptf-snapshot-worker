@@ -1,16 +1,14 @@
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import configuration, {
-  LimiterConfig,
-  QueueConfig,
-} from './common/config/configuration';
+import configuration, { QueueConfig } from './common/config/configuration';
 import { validation } from './common/config/validation';
 import { ListingModule } from './listing/listing.module';
 import IORedis from 'ioredis';
 import { HealthModule } from './health/health.module';
 import { SchemaModule } from './schema/schema.module';
 import { SkinModule } from './skin/skin.module';
+import { LimiterModule } from './limiter/limiter.module';
 
 @Module({
   imports: [
@@ -46,12 +44,9 @@ import { SkinModule } from './skin/skin.module';
           };
         }
 
-        const limiter = configService.get<LimiterConfig>('limiter');
-
         return {
           redis: redisConfig,
           prefix: 'bull',
-          limiter,
         };
       },
     }),
@@ -59,6 +54,7 @@ import { SkinModule } from './skin/skin.module';
     ListingModule,
     SchemaModule,
     SkinModule,
+    LimiterModule,
   ],
 })
 export class AppModule {}

@@ -3,9 +3,11 @@ import {
   Process,
   OnQueueFailed,
   OnQueueCompleted,
+  InjectQueue,
 } from '@nestjs/bull';
-import { Logger } from '@nestjs/common';
-import { Job } from 'bull';
+import { Logger, OnModuleDestroy } from '@nestjs/common';
+import { Job, Queue } from 'bull';
+import { LimiterService } from '../limiter/limiter.service';
 import { ListingService } from './listing.service';
 
 interface JobData {
@@ -13,16 +15,30 @@ interface JobData {
 }
 
 @Processor('snapshot')
-export class ListingConsumer {
+export class ListingConsumer implements OnModuleDestroy {
   private readonly logger = new Logger(ListingConsumer.name);
 
-  constructor(private readonly listingService: ListingService) {}
+  constructor(
+    private readonly listingService: ListingService,
+    private readonly limiterService: LimiterService,
+    @InjectQueue('snapshot')
+    private readonly queue: Queue,
+  ) {}
 
-  @Process()
+  async onModuleDestroy(): Promise<void> {
+    // Pause queue to prevent running more jobs
+    await this.queue.pause(true, false);
+  }
+
+  @Process({
+    concurrency: 2,
+  })
   async getListings(job: Job<JobData>) {
     const sku = job.data.sku;
 
-    const snapshot = await this.listingService.getSnapshot(sku);
+    const snapshot = await this.limiterService.schedule(() => {
+      return this.listingService.getSnapshot(sku);
+    });
 
     await this.listingService.saveSnapshot(sku, snapshot);
 

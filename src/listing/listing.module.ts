@@ -5,6 +5,7 @@ import { SkinModule } from '../skin/skin.module';
 import { SchemaModule } from '../schema/schema.module';
 import { ListingConsumer } from './listing.processor';
 import { ListingService } from './listing.service';
+import { LimiterModule } from '../limiter/limiter.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ListingService } from './listing.service';
     HttpModule,
     SchemaModule,
     SkinModule,
+    LimiterModule,
   ],
   providers: [ListingService, ListingConsumer],
 })
