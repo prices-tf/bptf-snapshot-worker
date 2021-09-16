@@ -47,6 +47,8 @@ export class ListingService {
       'Getting listings for ' + sku + ' (' + bptfNameSKU + ')...',
     );
 
+    const now = new Date().getTime() / 1000;
+
     return this.httpService
       .get<ClassifiedsSearchResponse>(
         'https://backpack.tf/api/classifieds/listings/snapshot',
@@ -64,7 +66,9 @@ export class ListingService {
             keys: listing.currencies.keys ?? 0,
             metal: listing.currencies.metal ?? 0,
           },
-          isAutomatic: listing.userAgent !== undefined,
+          isAutomatic:
+            listing.userAgent !== undefined &&
+            now - listing.userAgent.lastPulse < 5 * 60,
           isBuyout: listing.buyout === 1,
           isOffers: listing.offers === 1,
           details: listing.details,
