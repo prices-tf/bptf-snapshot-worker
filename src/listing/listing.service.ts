@@ -91,12 +91,14 @@ export class ListingService {
 
     let name = '';
 
-    if (item.outputQuality && item.outputQuality !== 6) {
-      name = (await this.schemaService.getQualityById(item.quality)).name + ' ';
-    }
-
     if (item.craftable === false) {
       name += 'Non-Craftable ';
+    }
+
+    if (item.outputQuality && item.outputQuality !== 6) {
+      name =
+        (await this.schemaService.getQualityById(item.outputQuality)).name +
+        ' ';
     }
 
     if (item.quality2) {
