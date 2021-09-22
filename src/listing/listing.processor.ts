@@ -10,6 +10,14 @@ import { Job, Queue } from 'bull';
 import { LimiterService } from '../limiter/limiter.service';
 import { ListingService } from './listing.service';
 
+import { config } from 'dotenv';
+
+if (process.env.NODE_ENV !== 'production') {
+  // Hack to get environment variables when developing. Needed for concurrency
+  // option in process annotation.
+  config();
+}
+
 interface JobData {
   sku: string;
 }
@@ -31,7 +39,7 @@ export class ListingConsumer implements OnModuleDestroy {
   }
 
   @Process({
-    concurrency: 2,
+    concurrency: parseInt(process.env.LIMITER_MAX_CONCURRENT, 10),
   })
   async getListings(job: Job<JobData>) {
     const sku = job.data.sku;
