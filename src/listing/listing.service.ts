@@ -58,23 +58,34 @@ export class ListingService {
       )
       .toPromise()
       .then((response) => {
-        const listings = (response.data.listings || []).map((listing) => ({
-          steamid64: listing.steamid,
-          item: listing.item,
-          intent: listing.intent,
-          currencies: {
-            keys: listing.currencies.keys ?? 0,
-            metal: listing.currencies.metal ?? 0,
-          },
-          isAutomatic:
-            listing.userAgent !== undefined &&
-            now - listing.userAgent.lastPulse < 5 * 60,
-          isBuyout: listing.buyout === 1,
-          isOffers: listing.offers === 1,
-          details: listing.details,
-          createdAt: new Date(listing.timestamp * 1000),
-          bumpedAt: new Date(listing.bump * 1000),
-        }));
+        const listings = (response.data.listings || [])
+          .filter((listing) => {
+            // Filter out listings not priced in keys and metal
+            for (const currency in listing.currencies) {
+              if (currency !== 'metal' && currency !== 'keys') {
+                return false;
+              }
+            }
+
+            return true;
+          })
+          .map((listing) => ({
+            steamid64: listing.steamid,
+            item: listing.item,
+            intent: listing.intent,
+            currencies: {
+              keys: listing.currencies.keys ?? 0,
+              metal: listing.currencies.metal ?? 0,
+            },
+            isAutomatic:
+              listing.userAgent !== undefined &&
+              now - listing.userAgent.lastPulse < 5 * 60,
+            isBuyout: listing.buyout === 1,
+            isOffers: listing.offers === 1,
+            details: listing.details,
+            createdAt: new Date(listing.timestamp * 1000),
+            bumpedAt: new Date(listing.bump * 1000),
+          }));
 
         return {
           listings,
