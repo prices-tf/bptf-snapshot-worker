@@ -51,7 +51,7 @@ export class ListingService {
 
     return this.httpService
       .get<ClassifiedsSearchResponse>(
-        'https://backpack.tf/api/classifieds/listings/snapshot',
+        'https://api.backpack.tf/api/classifieds/listings/snapshot',
         {
           params: qs,
         },
