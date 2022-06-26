@@ -71,6 +71,8 @@ export class ListingConsumer implements OnModuleDestroy {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       console.log(err.response?.data);
+    } else {
+      console.error(err);
     }
   }
 }
