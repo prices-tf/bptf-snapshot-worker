@@ -62,7 +62,7 @@ export class LimiterService
     }
 
     this.limiter = new Bottleneck({
-      id: 'bptf-snapshot-worker',
+      id: 'bptf',
       clearDatastore: true,
       maxConcurrent:
         this.configService.get<LimiterConfig>('limiter').maxConcurrent,
