@@ -1,6 +1,6 @@
 import { Listing } from './listing.interface';
 
 export interface Snapshot {
-  listings: Listing[];
+  listings?: Listing[];
   createdAt: Date;
 }

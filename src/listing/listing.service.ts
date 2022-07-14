@@ -19,82 +19,42 @@ export class ListingService {
     private readonly httpService: HttpService,
   ) {}
 
-  async saveSnapshot(sku: string, snapshot: Snapshot): Promise<void> {
+  async saveSnapshot(
+    sku: string,
+    name: string,
+    snapshot: Snapshot,
+  ): Promise<void> {
     const url = `${
       this.configService.get<Services>('services').listings
     }/listings`;
 
     await this.httpService
       .post<any>(url, {
-        sku: sku,
-        listings: snapshot.listings,
+        sku,
+        name,
+        listings: snapshot.listings ?? [],
         createdAt: snapshot.createdAt,
       })
       .toPromise();
   }
 
   async getSnapshot(sku: string): Promise<Snapshot> {
-    const bptfNameSKU = await this.createSKU(sku);
-
     const qs: { [key: string]: any } = {
       appid: 440,
       token: this.configService.get('bptfAccessToken'),
       page_size: 30,
-      sku: bptfNameSKU,
+      sku,
     };
 
-    this.logger.log(
-      'Getting listings for ' + sku + ' (' + bptfNameSKU + ')...',
-    );
-
-    const now = new Date().getTime() / 1000;
-
     return this.httpService
-      .get<ClassifiedsSearchResponse>(
-        'https://api.backpack.tf/api/classifieds/listings/snapshot',
-        {
-          params: qs,
-        },
-      )
+      .get<any>('https://api.backpack.tf/api/classifieds/listings/snapshot', {
+        params: qs,
+      })
       .toPromise()
-      .then((response) => {
-        const listings = (response.data.listings || [])
-          .filter((listing) => {
-            // Filter out listings not priced in keys and metal
-            for (const currency in listing.currencies) {
-              if (currency !== 'metal' && currency !== 'keys') {
-                return false;
-              }
-            }
-
-            return true;
-          })
-          .map((listing) => ({
-            steamid64: listing.steamid,
-            item: listing.item,
-            intent: listing.intent,
-            currencies: {
-              keys: listing.currencies.keys ?? 0,
-              metal: listing.currencies.metal ?? 0,
-            },
-            isAutomatic:
-              listing.userAgent !== undefined &&
-              now - listing.userAgent.lastPulse < 5 * 60,
-            isBuyout: listing.buyout === 1,
-            isOffers: listing.offers === 1,
-            details: listing.details,
-            createdAt: new Date(listing.timestamp * 1000),
-            bumpedAt: new Date(listing.bump * 1000),
-          }));
-
-        return {
-          listings,
-          createdAt: new Date(response.data.createdAt * 1000),
-        };
-      });
+      .then((response) => response.data);
   }
 
-  async createSKU(sku: string): Promise<string> {
+  async createName(sku: string): Promise<string> {
     const item: Item = SKU.fromString(sku);
     const schemaItem = await this.schemaService.getItemByDefindex(
       item.defindex,

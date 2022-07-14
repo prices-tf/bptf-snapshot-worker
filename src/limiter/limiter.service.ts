@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Bottleneck from 'bottleneck';
-import Redis from 'ioredis';
+import { RedisOptions } from 'ioredis';
 import {
   Config,
   LimiterConfig,
-  QueueConfig,
+  RedisConfig,
 } from '../common/config/configuration';
 
 @Injectable()
@@ -39,25 +39,25 @@ export class LimiterService
   }
 
   onModuleInit(): void {
-    const queueConfig = this.configService.get<QueueConfig>('queue');
+    const redisConfig = this.configService.get<RedisConfig>('redis');
 
-    let redisConfig: Redis.RedisOptions;
+    let redisOptions: RedisOptions;
 
-    if (queueConfig.isSentinel) {
-      redisConfig = {
+    if (redisConfig.isSentinel) {
+      redisOptions = {
         sentinels: [
           {
-            host: queueConfig.host,
-            port: queueConfig.port,
+            host: redisConfig.host,
+            port: redisConfig.port,
           },
         ],
-        name: queueConfig.set,
+        name: redisConfig.set,
       };
     } else {
-      redisConfig = {
-        host: queueConfig.host,
-        port: queueConfig.port,
-        password: queueConfig.password,
+      redisOptions = {
+        host: redisConfig.host,
+        port: redisConfig.port,
+        password: redisConfig.password,
       };
     }
 
@@ -68,7 +68,7 @@ export class LimiterService
         this.configService.get<LimiterConfig>('limiter').maxConcurrent,
       minTime: this.configService.get<LimiterConfig>('limiter').minTime,
       datastore: 'ioredis',
-      clientOptions: redisConfig,
+      clientOptions: redisOptions,
     });
   }
 

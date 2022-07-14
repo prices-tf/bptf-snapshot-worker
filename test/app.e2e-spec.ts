@@ -5,27 +5,30 @@ import { Queue } from 'bull';
 import { getQueueToken } from '@nestjs/bull';
 
 describe('AppController (e2e)', () => {
-  let moduleRef: TestingModule;
   let app: INestApplication;
-  let snapshotQueue: Queue;
+  let queue: Queue;
 
   beforeEach(async () => {
-    moduleRef = await Test.createTestingModule({
+    const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    app = moduleRef.createNestApplication();
+    app = moduleFixture.createNestApplication();
     await app.init();
 
-    snapshotQueue = app.get<Queue>(getQueueToken('snapshot'));
+    queue = app.get<Queue>(getQueueToken('snapshot'));
   });
 
   afterEach(() => {
-    return moduleRef.close();
+    return app.close();
+  });
+
+  it('should be defined', () => {
+    return expect(app).toBeDefined();
   });
 
   it('should start properly', async () => {
-    const counts = await snapshotQueue.getJobCounts();
+    const counts = await queue.getJobCounts();
 
     expect(counts.active).toBe(0);
     expect(counts.delayed).toBe(0);

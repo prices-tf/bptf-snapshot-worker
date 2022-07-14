@@ -44,14 +44,18 @@ export class ListingConsumer implements OnModuleDestroy {
   async getListings(job: Job<JobData>) {
     const sku = job.data.sku;
 
+    const name = await this.listingService.createName(sku);
+
+    this.logger.log('Getting listings for ' + sku + ' (' + name + ')...');
+
     const snapshot = await this.limiterService.schedule(() => {
-      return this.listingService.getSnapshot(sku);
+      return this.listingService.getSnapshot(name);
     });
 
-    await this.listingService.saveSnapshot(sku, snapshot);
+    await this.listingService.saveSnapshot(sku, name, snapshot);
 
     return {
-      listingCount: snapshot.listings.length,
+      listingCount: snapshot.listings?.length ?? 0,
     };
   }
 
