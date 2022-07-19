@@ -9,8 +9,6 @@ import { validation } from './common/config/validation';
 import { ListingModule } from './listing/listing.module';
 import { RedisOptions } from 'ioredis';
 import { HealthModule } from './health/health.module';
-import { SchemaModule } from './schema/schema.module';
-import { SkinModule } from './skin/skin.module';
 import { LimiterModule } from './limiter/limiter.module';
 
 @Module({
@@ -55,8 +53,6 @@ import { LimiterModule } from './limiter/limiter.module';
     }),
     HealthModule,
     ListingModule,
-    SchemaModule,
-    SkinModule,
     LimiterModule,
   ],
 })

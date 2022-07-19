@@ -20,9 +20,7 @@ export interface RedisConfig {
 }
 
 export interface Services {
-  schema: string;
   listings: string;
-  skin: string;
 }
 
 export default (): Config => {
@@ -44,9 +42,7 @@ export default (): Config => {
       set: process.env.REDIS_SET,
     },
     services: {
-      schema: process.env.TF2_SCHEMA_SERVICE_URL,
       listings: process.env.TF2_SNAPSHOT_SERVICE_URL,
-      skin: process.env.TF2_SKIN_SERVICE_URL,
     },
   };
 };

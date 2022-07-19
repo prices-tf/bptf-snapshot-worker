@@ -44,7 +44,7 @@ export class ListingConsumer implements OnModuleDestroy {
   async getListings(job: Job<JobData>) {
     const sku = job.data.sku;
 
-    const name = await this.listingService.createName(sku);
+    const name = await this.listingService.getBackpackTFSKU(sku);
 
     this.logger.log('Getting listings for ' + sku + ' (' + name + ')...');
 

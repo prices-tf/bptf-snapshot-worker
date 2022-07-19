@@ -11,9 +11,7 @@ const validation = Joi.object({
   REDIS_PORT: Joi.number().required(),
   REDIS_PASSWORD: Joi.string().optional(),
   REDIS_SET: Joi.string().optional(),
-  TF2_SCHEMA_SERVICE_URL: Joi.string().required(),
   TF2_SNAPSHOT_SERVICE_URL: Joi.string().required(),
-  TF2_SKIN_SERVICE_URL: Joi.string().required(),
 });
 
 export { validation };
