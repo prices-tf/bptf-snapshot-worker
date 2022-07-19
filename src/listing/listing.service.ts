@@ -1,4 +1,5 @@
-import { HttpService, Injectable, Logger } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Config, Services } from '../common/config/configuration';
 import { Snapshot } from './interfaces/snapshot.interface';
