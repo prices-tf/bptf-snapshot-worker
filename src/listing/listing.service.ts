@@ -1,13 +1,11 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Config, Services } from '../common/config/configuration';
 import { Snapshot } from './interfaces/snapshot.interface';
 
 @Injectable()
 export class ListingService {
-  private readonly logger = new Logger(ListingService.name);
-
   constructor(
     private readonly configService: ConfigService<Config>,
     private readonly httpService: HttpService,
